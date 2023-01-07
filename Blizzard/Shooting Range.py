@@ -1,6 +1,20 @@
 def shot(wall1, wall2, shot_point, later_point):
-    #replace this for solution
-    return 100
+
+    points = 0
+
+    w1x, w1y = wall1
+    w2x, w2y = wall2
+    sx, sy = shot_point
+    lx, ly = later_point
+
+    m = (w1y - w2y) / (w1x - w2x)
+    b = (w1x * w2y - w2x * w1y) / (w1x - w2x)
+
+    x = 3
+
+    y = m * x + b
+
+    print(y)
 
 
 
