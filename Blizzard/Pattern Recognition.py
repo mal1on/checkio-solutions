@@ -17,14 +17,15 @@ def checkio(pattern, image):
                         image[v_ind][h_ind + c_ind] = 2
                     else:
                         image[v_ind][h_ind + c_ind] = 3
-                    if image[v_ind + 1][h_ind + c_ind] == 0:
-                        image[v_ind + 1][h_ind + c_ind] = 2
-                    else:
-                        image[v_ind + 1][h_ind + c_ind] = 3    
+                    for vert in range(1, len(pattern)):    
+                        if image[v_ind + vert][h_ind + c_ind] == 0:
+                            image[v_ind + vert][h_ind + c_ind] = 2
+                        else:
+                            image[v_ind + vert][h_ind + c_ind] = 3    
     print(image)                                         
 
 
-
+checkio([[1,0,0],[0,1,0],[0,0,1]],[[1,0,0,0,1,0,1,0,1],[0,1,0,0,0,1,0,1,0],[0,0,1,0,0,0,1,0,1],[1,0,0,1,0,0,0,1,0],[0,0,0,0,1,0,0,0,1],[0,1,0,0,0,1,0,0,0],[0,1,0,0,0,0,1,0,1]])
 
 
 checkio([[1, 0], [1, 1]],
