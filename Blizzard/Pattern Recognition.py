@@ -1,5 +1,10 @@
 def checkio(pattern, image):
-    return []
+
+    for v_ind in range(len(image) - len(pattern) + 1):
+        print(v_ind)
+        for h_ind in range(len(image[0]) - len(pattern[0]) + 1):
+            print(image[v_ind][h_ind:h_ind + len(pattern[0])])
+
 
 
 
