@@ -16,14 +16,22 @@ def similar_triangles(coords_1: Coords, coords_2: Coords) -> bool:
     angles_2 = []
 
     a, b, c = coords_1
-    angles_1.append(round(angle(a, b, c)))
-    angles_1.append(round(angle(c, a, b)))
-    angles_1.append(180 - sum(angles_1))
+    angles_1.append(round(angle(a, b, c), 3))
+    angles_1.append(round(angle(c, a, b), 3))
+    angles_1.append(round(angle(b, c, a), 3))
+
+    if sum(angles_1) > 181:
+        for ind, ang in enumerate(angles_1):
+            angles_1[ind] = round((360 - ang), 3)
 
     a, b, c = coords_2
-    angles_2.append(round(angle(a, b, c)))
-    angles_2.append(round(angle(c, a, b)))
-    angles_2.append(180 - sum(angles_2))
+    angles_2.append(round(angle(a, b, c), 3))
+    angles_2.append(round(angle(c, a, b), 3))
+    angles_2.append(round(angle(b, c, a), 3))
+
+    if sum(angles_2) > 181:
+        for ind, ang in enumerate(angles_2):
+            angles_2[ind] = round((360 - ang), 3)
 
     return all(angle in angles_2 for angle in angles_1)
 
