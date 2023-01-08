@@ -12,20 +12,20 @@ def similar_triangles(coords_1: Coords, coords_2: Coords) -> bool:
 
         return ang + 360 if ang < 0 else ang
 
-    angles_1 = set()
-    angles_2 = set()
+    angles_1 = []
+    angles_2 = []
 
     a, b, c = coords_1
-    angles_1.add(round(angle(a, b, c)))
-    angles_1.add(round(angle(c, a, b)))
-    angles_1.add(180 - sum(angles_1))
+    angles_1.append(round(angle(a, b, c)))
+    angles_1.append(round(angle(c, a, b)))
+    angles_1.append(180 - sum(angles_1))
 
     a, b, c = coords_2
-    angles_2.add(round(angle(a, b, c)))
-    angles_2.add(round(angle(c, a, b)))
-    angles_2.add(180 - sum(angles_2))
+    angles_2.append(round(angle(a, b, c)))
+    angles_2.append(round(angle(c, a, b)))
+    angles_2.append(180 - sum(angles_2))
 
-    return angles_1 == angles_2
+    return all(angle in angles_2 for angle in angles_1)
 
 
 if __name__ == '__main__':
