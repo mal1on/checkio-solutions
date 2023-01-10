@@ -2,11 +2,11 @@ from typing import Iterable
 
 
 def can_balance(weights: Iterable) -> int:
-    # your code here
+
     result = -1
-    size = len(weights) - 1
 
     def w_cal(comb):
+
         weight = 0
         for ind, item in enumerate(comb):
             weight += item * (len(comb) - ind)
