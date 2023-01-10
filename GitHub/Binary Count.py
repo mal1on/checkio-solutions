@@ -1,4 +1,5 @@
 def checkio(number: int) -> int:
+    
     return str(bin(number)).count('1')
 
 
