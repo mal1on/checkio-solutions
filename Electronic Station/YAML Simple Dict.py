@@ -2,12 +2,9 @@ def yaml(a):
 
     result = {}
 
-    for k, v in [b.split(':') for b in a.splitlines() if b]:
+    for k, v in [b.split(': ') for b in a.splitlines() if b]:
 
-        try:
-            result[k] = int(v)
-        except:
-            result[k] = v.strip()
+        result[k] = int(v) if v.isdigit() else v
 
     return result
 
