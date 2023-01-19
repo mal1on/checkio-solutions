@@ -4,12 +4,22 @@ def yaml(a):
 
     for k, v in [b.split(': ') for b in a.splitlines() if b]:
 
-        result[k] = int(v) if v.isdigit() else v
+        if v.isdigit():
+            result[k] = int(v)
+        elif v == 'true':
+            result[k] = True 
+        elif v == 'false':
+            result[k] = False
+        else: 
+            result[k] = v        
 
-    return result
 
 
+    print(result)
 
-yaml("""name: Alex Fox
-age: 12
-class: 12b""") == {"age": 12, "class": "12b", "name": "Alex Fox"}
+
+yaml('name: "Bob Dylan"\n' "children: 6\n" "coding:") == {
+        "children": 6,
+        "coding": None,
+        "name": "Bob Dylan",
+    }
