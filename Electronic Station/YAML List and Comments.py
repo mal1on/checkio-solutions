@@ -14,18 +14,17 @@ def yaml_converter(yaml_str):
         yaml_str = yaml_str.replace('"', '').replace('\\', '"')
     elif '"' in yaml_str:
         yaml_str = yaml_str.replace('"', '')
-    else:
-        yaml_str = yaml_str
 
     return yaml_str
 
 
 def yaml(a):
 
-    result = {}
     lines = [b.split(':') for b in a.splitlines() if b and not b.startswith('#')]
 
     if all(len(line) == 2 for line in lines):
+
+        result = {}
 
         for k, v in lines:
 
@@ -33,14 +32,23 @@ def yaml(a):
 
     elif all(line[0].startswith('-') for line in lines):
 
-        result = [yaml_converter(line[0].replace('- ', '')) for line in lines]
+        result = []
+
+        for line in lines:
+            line = line[0].replace('- ', '')
+            if line.startswith('"'):
+                result.append(line)
+            else:
+                line = yaml_converter(line.split('#')[0])
+                result.append(line)    
+
 
                     
 
     print(result)
 
 
-yaml('- write some\n- "Alex Chii"\n- 89') == ['write some', 'Alex Chii', 89]
+# yaml('- write some\n- "Alex Chii"\n- 89') == ['write some', 'Alex Chii', 89]
 
 yaml('# comment\n'
  '- write some # after\n'
@@ -48,8 +56,8 @@ yaml('# comment\n'
  '- "Alex Chii #sir "\n'
  '- 89 #bl') == ['write some', 'Alex Chii #sir ', 89]
 
-yaml('name: "Bob Dylan"\n' "children: 6\n" "coding:") == {
-        "children": 6,
-        "coding": None,
-        "name": "Bob Dylan",
-    }
+# yaml('name: "Bob Dylan"\n' "children: 6\n" "coding:") == {
+#         "children": 6,
+#         "coding": None,
+#         "name": "Bob Dylan",
+#     }
