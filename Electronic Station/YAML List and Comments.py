@@ -36,28 +36,13 @@ def yaml(a):
 
         for line in lines:
             line = line[0].replace('- ', '')
-            if line.startswith('"'):
-                result.append(line)
+            if line.startswith('"') and '#' in line:
+                result.append(line.replace('"', ''))
             else:
                 line = yaml_converter(line.split('#')[0])
                 result.append(line)    
 
-
-                    
-
     print(result)
 
 
-# yaml('- write some\n- "Alex Chii"\n- 89') == ['write some', 'Alex Chii', 89]
-
-yaml('# comment\n'
- '- write some # after\n'
- '# one mor\n'
- '- "Alex Chii #sir "\n'
- '- 89 #bl') == ['write some', 'Alex Chii #sir ', 89]
-
-# yaml('name: "Bob Dylan"\n' "children: 6\n" "coding:") == {
-#         "children": 6,
-#         "coding": None,
-#         "name": "Bob Dylan",
-#     }
+yaml("-\n-\n-\n- 7") == [None, None, None, 7]
