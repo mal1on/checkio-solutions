@@ -20,7 +20,8 @@ def yaml_converter(yaml_str):
 
 def yaml(a):
 
-    lines = [b.split(':') for b in a.splitlines() if b and not b.startswith('#')]
+    lines = [b.split(':')
+             for b in a.splitlines() if b and not b.startswith('#')]
 
     if all(len(line) == 2 for line in lines):
 
@@ -36,13 +37,30 @@ def yaml(a):
 
         for line in lines:
             line = line[0].replace('- ', '')
-            if line.startswith('"') and '#' in line:
+            if line == '-':
+                result.append(None)
+            elif line.startswith('"') and '#' in line:
                 result.append(line.replace('"', ''))
             else:
-                line = yaml_converter(line.split('#')[0])
-                result.append(line)    
+                result.append(yaml_converter(line.split('#')[0]))
 
-    print(result)
+    return result
 
 
-yaml("-\n-\n-\n- 7") == [None, None, None, 7]
+if __name__ == "__main__":
+    print("Example:")
+    print(yaml('- write some\n- "Alex Chii"\n- 89'))
+
+    # These "asserts" are used for self-checking and not for an auto-testing
+    assert yaml(
+        '- write some\n- "Alex Chii"\n- 89') == ["write some", "Alex Chii", 89]
+    assert yaml(
+        "# comment\n"
+        "- write some # after\n"
+        "# one mor\n"
+        '- "Alex Chii #sir "\n'
+        "- 89 #bl"
+    ) == ["write some", "Alex Chii #sir ", 89]
+    assert yaml("- 1\n- 2\n- 3\n\n- 4\n\n\n\n- 5") == [1, 2, 3, 4, 5]
+    assert yaml("-\n-\n-\n- 7") == [None, None, None, 7]
+    print("Coding complete? Click 'Check' to earn cool rewards!")
