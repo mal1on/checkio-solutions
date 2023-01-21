@@ -1,27 +1,55 @@
+def yaml_converter(yaml_str):
+
+    yaml_str = yaml_str.strip()
+
+    if yaml_str.isdigit():
+        yaml_str = int(yaml_str)
+    elif yaml_str == 'true':
+        yaml_str = True
+    elif yaml_str == 'false':
+        yaml_str = False
+    elif not yaml_str or yaml_str == 'null':
+        yaml_str = None
+    elif '\\' in yaml_str:
+        yaml_str = yaml_str.replace('"', '').replace('\\', '"')
+    elif '"' in yaml_str:
+        yaml_str = yaml_str.replace('"', '')
+    else:
+        yaml_str = yaml_str
+
+    return yaml_str
+
+
 def yaml(a):
 
     result = {}
+    lines = [b.split(':') for b in a.splitlines() if b and not b.startswith('#')]
 
-    for k, v in [b.split(':') for b in a.splitlines() if b]:
+    if all(len(line) == 2 for line in lines):
 
-        v = v.strip()
+        for k, v in lines:
 
-        if v.isdigit():
-            result[k] = int(v)
-        elif v == 'true':
-            result[k] = True
-        elif v == 'false':
-            result[k] = False
-        elif not v or v == 'null':
-            result[k] = None
-        elif '\\' in v:
-            result[k] = v.replace('"', '').replace('\\', '"')
-        elif '"' in v:
-            result[k] = v.replace('"', '')
-        else:
-            result[k] = v
+            result[k] = yaml_converter(v)
+
+    elif all(line[0].startswith('-') for line in lines):
+
+        result = [yaml_converter(line[0].replace('- ', '')) for line in lines]
+
+                    
 
     print(result)
 
 
 yaml('- write some\n- "Alex Chii"\n- 89') == ['write some', 'Alex Chii', 89]
+
+yaml('# comment\n'
+ '- write some # after\n'
+ '# one mor\n'
+ '- "Alex Chii #sir "\n'
+ '- 89 #bl') == ['write some', 'Alex Chii #sir ', 89]
+
+yaml('name: "Bob Dylan"\n' "children: 6\n" "coding:") == {
+        "children": 6,
+        "coding": None,
+        "name": "Bob Dylan",
+    }
