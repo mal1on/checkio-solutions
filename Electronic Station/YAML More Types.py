@@ -1,25 +1,24 @@
+def yaml_converter(yaml_str):
+
+    yaml_str = yaml_str.strip()
+
+    if yaml_str.isdigit():
+        return int(yaml_str)
+    elif yaml_str in ('true', 'false'):
+        return yaml_str == 'true'
+    elif yaml_str in ('', 'null'):
+        return None
+    else:
+        return yaml_str.replace('"', '').replace('\\', '"')
+
+
 def yaml(a):
 
     result = {}
 
-    for k, v in [b.split(':') for b in a.splitlines() if b]:
-
-        v = v.strip()
-
-        if v.isdigit():
-            result[k] = int(v)
-        elif v == 'true':
-            result[k] = True
-        elif v == 'false':
-            result[k] = False
-        elif not v or v == 'null':
-            result[k] = None
-        elif '\\' in v:
-            result[k] = v.replace('"', '').replace('\\', '"')
-        elif '"' in v:
-            result[k] = v.replace('"', '')
-        else:
-            result[k] = v
+    for k, sep, v in [line.partition(':') for line in a.splitlines()]:
+        if sep:
+            result[k] = yaml_converter(v)
 
     return result
 
