@@ -24,17 +24,11 @@ def yaml(a):
              for b in a.splitlines() if b and not b.startswith('#')]
 
     if all(len(line) == 2 for line in lines):
-
         result = {}
-
         for k, v in lines:
-
             result[k] = yaml_converter(v)
-
     elif all(line[0].startswith('-') for line in lines):
-
         result = []
-
         for line in lines:
             line = line[0].replace('- ', '')
             if line == '-':
