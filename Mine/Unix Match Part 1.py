@@ -1,16 +1,20 @@
 import re
 
+re_dict = {'*': '.*', '?': '.'}
+re_special = {'.': '\\.'}
+
 def unix_match(filename: str, pattern: str) -> bool:
     # your code here
-    if pattern == '*' or filename == pattern:
-        return True
-    if pattern.startswith('*'):
-        return filename[- (len(pattern) - 1):] == pattern[1:]
-    if len(filename) == len(pattern) and '?' in pattern:
-        parts = pattern.split('?')
-        return all(part in filename for part in parts)
+    re_pattern = ''
+    for char in pattern:
+        if char in re_dict.keys():
+            re_pattern += re_dict[char]
+        elif char in re_special.keys():
+            re_pattern += re_special[char]
+        else:
+            re_pattern += char        
 
-    return False    
+    return True if re.match(re_pattern, filename) else False            
             
 
 
@@ -18,4 +22,6 @@ def unix_match(filename: str, pattern: str) -> bool:
 print(unix_match("somefile.txt", "*")) == True
 print(unix_match("other.exe", "*")) == True 
 print(unix_match("my.exe", "*.txt")) == False
-print(unix_match("log1.txt", "log?.txt")) == True  
+print(unix_match("log1.txt", "log?.txt")) == True
+print(unix_match('log12.txt', '**')) == True
+print(unix_match('l.txt', '???*')) == True  
