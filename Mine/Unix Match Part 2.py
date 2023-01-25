@@ -18,5 +18,11 @@ def unix_match(filename: str, pattern: str) -> bool:
     return True if re.match(re_pattern, filename) else False
 
 
-print(unix_match("log1.txt", "log[1234567890].txt")) == True
-print(unix_match("log1.txt", "log[!1].txt")) == False
+print("Example:")
+print(unix_match("log1.txt", "log[1234567890].txt"))
+
+# These "asserts" are used for self-checking
+assert unix_match("log1.txt", "log[1234567890].txt") == True
+assert unix_match("log1.txt", "log[!1].txt") == False
+
+print("The mission is done! Click 'Check Solution' to earn rewards!")
