@@ -15,6 +15,11 @@ def unix_match(filename: str, pattern: str) -> bool:
         else:
             re_pattern += char
 
+    if '[]' in re_pattern:
+        re_pattern = '\\[\\]'.join(re_pattern.split('[]'))
+    elif '[^]' in re_pattern:
+        re_pattern = '\\[\\!\\]'.join(re_pattern.split('[^]'))    
+
     return True if re.match(re_pattern, filename) else False
 
 
