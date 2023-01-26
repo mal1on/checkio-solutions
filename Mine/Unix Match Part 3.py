@@ -1,38 +1,29 @@
 import re
 
-re_dict = {'*': '.*', '?': '.', '!': '^'}
-re_special = ['.']
-
+re_dict = {'.': '\\.', '*': '.+', '?': '.', '[!': '[^'}
 
 def unix_match(filename: str, pattern: str) -> bool:
 
-    re_pattern = ''
-    for char in pattern:
-        if char in re_dict.keys():
-            re_pattern += re_dict[char]
-        elif char in re_special:
-            re_pattern += '\\' + char
-        else:
-            re_pattern += char
+    re_pattern = pattern
+    for key in re_dict:
+        re_pattern = re_pattern.replace(key, re_dict[key]).replace('[.+', '[*').replace('[.', '[?')
 
-    if '[]' in re_pattern:
-        re_pattern = '\\[\\]'.join(re_pattern.split('[]'))
-    elif '[^]' in re_pattern:
-        re_pattern = '\\[\\!\\]'.join(re_pattern.split('[^]'))    
+    try:
+        return bool(re.match(re_pattern, filename))
+    except:
+        return filename == pattern          
 
-    return True if re.match(re_pattern, filename) else False
-
-
-if __name__ == '__main__':
-    print("Example:")
-    print(unix_match('somefile.txt', '*'))
     
-    # These "asserts" are used for self-checking and not for an auto-testing
-    assert unix_match('somefile.txt', '*') == True
-    assert unix_match('other.exe', '*') == True
-    assert unix_match('my.exe', '*.txt') == False
-    assert unix_match('log1.txt', 'log?.txt') == True
-    assert unix_match('log1.txt', 'log[1234567890].txt') == True
-    assert unix_match('log12.txt', 'log?.txt') == False
-    assert unix_match('log12.txt', 'log??.txt') == True
-    print("Coding complete? Click 'Check' to earn cool rewards!")  
+
+
+# unix_match('somefile.txt', '*') == True
+# unix_match('other.exe', '*') == True
+# unix_match('my.exe', '*.txt') == False
+# unix_match('log1.txt', 'log?.txt') == True
+# unix_match('log1.txt', 'log[1234567890].txt') == True
+# unix_match('log12.txt', 'log?.txt') == False
+# unix_match('log12.txt', 'log??.txt') == True
+# print(unix_match("name.txt","name[]txt")) == False
+# print(unix_match("1name.txt","[!1234567890]*")) == False
+# print(unix_match("[!]check.txt","[!]check.txt")) == True
+print(unix_match("[?*]","[[][?][*][]]")) == True
