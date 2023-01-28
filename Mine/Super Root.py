@@ -1,25 +1,24 @@
-def super_root(number):
+def calc(sr, step, number):
 
-    sr = 1
     while True:
-        sr += 0.1
-        if sr ** sr == number:
+        sr += step
+        if number - 0.001 < sr ** sr < number + 0.001:
             return sr 
         elif sr ** sr > number:
-            break        
-
-    sr -= 0.1
-    print(number, sr)        
-    while True:
-        if number - 0.001 < sr ** sr < number + 0.001:
+            sr -= step
             return sr
+
+def super_root(number):
+
+    sr, step = 1, 0.1
+
+    while True:
+        res = calc(sr, step, number)
+        if number - 0.001 < res ** res < number + 0.001:
+            return res   
         else:
-            sr += 0.00001    
-
-    
-        
-
-
+            sr = res
+            step /= 10    
 
 
 print(super_root(4)) == 2
