@@ -1,27 +1,17 @@
-def checkio(first, second):
+def count_consecutive_summers(num):
+    # your code here
+    diffs = 1
 
-    result = {'and': 0, 'or': 0, 'xor': 0}
-    first = list(map(int, str(bin(first)[2:]).lstrip('0')))
-    second = list(map(int, str(bin(second)[2:]).lstrip('0')))
-
-    for f in first:
-
-        and_r, or_r, xor_r = [], [], []
-
-        for s in second:
-            and_r.append(f and s)
-            or_r.append(f or s)
-            xor_r.append(f ^ s)
-
-        result['and'] += int(''.join(map(str, and_r)), 2)
-        result['or'] += int(''.join(map(str, or_r)), 2)
-        result['xor'] += int(''.join(map(str, xor_r)), 2)
-
-    return sum(result.values())
+    for f_num in range(1, num + 1):
+        for s_num in range(f_num + 1, num + 1):
+            f_num += s_num
+            if f_num == num:
+                diffs += 1
+                break
+    print(diffs)                
 
 
-# These "asserts" using only for self-checking and not necessary for auto-testing
-if __name__ == '__main__':
-    assert checkio(4, 6) == 38
-    assert checkio(2, 7) == 28
-    assert checkio(7, 2) == 18
+
+
+count_consecutive_summers(42) == 4
+count_consecutive_summers(99) == 6    
