@@ -9,7 +9,7 @@ def count_consecutive_summers(num):
                 diffs += 1
                 break
 
-    return diffs                
+    return diffs
 
 
 if __name__ == '__main__':
@@ -20,4 +20,4 @@ if __name__ == '__main__':
     assert count_consecutive_summers(42) == 4
     assert count_consecutive_summers(99) == 6
     assert count_consecutive_summers(1) == 1
-    print("Coding complete? Click 'Check' to earn cool rewards!")   
+    print("Coding complete? Click 'Check' to earn cool rewards!")
