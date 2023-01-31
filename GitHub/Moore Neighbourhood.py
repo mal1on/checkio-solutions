@@ -8,16 +8,17 @@ def count_neighbours(grid, row, col):
         for i, e in enumerate(r):
             if e and (i == col or i == col - 1 or i == col +1):
                   count += 1
-    print(count)                
+
+    print(count if grid[row][col] == 0 else count - 1)                
 
 
 
 
-# count_neighbours(((1, 0, 0, 1, 0),
-#                   (0, 1, 0, 0, 0),
-#                   (0, 0, 1, 0, 1),
-#                   (1, 0, 0, 0, 0),
-#                   (0, 0, 1, 0, 0),), 1, 2) == 3
+count_neighbours(((1, 0, 0, 1, 0),
+                  (0, 1, 0, 0, 0),
+                  (0, 0, 1, 0, 1),
+                  (1, 0, 0, 0, 0),
+                  (0, 0, 1, 0, 0),), 1, 2) == 3
 
 count_neighbours(((1, 0, 0, 1, 0),
                   (0, 1, 0, 0, 0),
