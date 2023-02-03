@@ -1,16 +1,21 @@
 class Capital:
 
-    city_name = None
+    __instance = None
+    city_name = ''
+    
+    def __new__(cls, city_name):
+        if cls.__instance is None:
+            cls.city_name = city_name
+            cls.__instance = super().__new__(cls)
+            
+        return cls.__instance
 
-    def __init__(self, city_name):
-        if Capital.city_name is None:
-            Capital.city_name = city_name
-
-    def name(self):
-        return self.city_name
+    def name(cls):
+        print(cls.city_name)    
 
 
-test = Capital('Sofia')
-print(test.name())
-test2 = Capital('Zagreb')
-print(test2.name())                
+ukraine_capital_1 = Capital("Kyiv")
+ukraine_capital_2 = Capital("London")
+ukraine_capital_3 = Capital("Marocco")
+ukraine_capital_2.name() == "Kyiv"
+ukraine_capital_3.name() == "Kyiv"                        
