@@ -2,15 +2,11 @@ class Chat:
 
     def __init__(self):
         self.dialogue = []
-        self.human = ''
-        self.robot = ''
 
     def connect_human(self, human):
-        self.human = human.name
         human.chat = self
 
     def connect_robot(self, robot):
-        self.robot = robot.sn
         robot.chat = self
 
     def show_human_dialogue(self):
@@ -35,7 +31,6 @@ class Human:
 
     def __init__(self, name):
         self.name = name
-        self.chat = ''
 
     def send(self, msg):
         self.chat.dialogue.append((self.name, msg))
