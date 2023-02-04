@@ -1,7 +1,6 @@
 class Capital:
 
     __instance = None
-    city_name = ''
 
     def __new__(cls, city_name):
         if cls.__instance is None:
