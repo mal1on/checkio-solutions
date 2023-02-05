@@ -40,27 +40,19 @@ class RemoteControl:
     def add_time(self, time):
         seconds = int(self.microwave.clock[:2]) * \
             60 + int(self.microwave.clock[3:])
-        if time[-1] == 's':
-            seconds += int(time[:-1])
-        else:
-            seconds += int(time[:-1]) * 60
+        seconds += int(time[:-1]) if time[-1] == 's' else int(time[:-1]) * 60
         seconds = 5400 if seconds > 5400 else seconds
         mins, secs = divmod(seconds, 60)
-        mins = '0' + str(mins) if mins < 10 else str(mins)
-        secs = '0' + str(secs) if secs < 10 else str(secs)
+        mins, secs = str(mins).zfill(2), str(secs).zfill(2)
         self.microwave.clock = mins + ':' + secs
 
     def del_time(self, time):
         seconds = int(self.microwave.clock[:2]) * \
             60 + int(self.microwave.clock[3:])
-        if time[-1] == 's':
-            seconds -= int(time[:-1])
-        else:
-            seconds -= int(time[:-1]) * 60
+        seconds -= int(time[:-1]) if time[-1] == 's' else int(time[:-1]) * 60
         seconds = 0 if seconds < 0 else seconds
         mins, secs = divmod(seconds, 60)
-        mins = '0' + str(mins) if mins < 10 else str(mins)
-        secs = '0' + str(secs) if secs < 10 else str(secs)
+        mins, secs = str(mins).zfill(2), str(secs).zfill(2)
         self.microwave.clock = mins + ':' + secs
 
     def show_time(self):
