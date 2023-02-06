@@ -2,9 +2,6 @@ class Friend:
     def __init__(self, name):
         self.invite = 'No party...'
 
-    def get_invite(self, invite):
-        self.invite = invite
-
     def show_invite(self):
         return self.invite
 
@@ -22,7 +19,7 @@ class Party:
 
     def send_invites(self, invite):
         for friend in self.friends:
-            friend.get_invite(f'{self.place}: {invite}')
+            friend.invite = f'{self.place}: {invite}'
 
 
 if __name__ == '__main__':
