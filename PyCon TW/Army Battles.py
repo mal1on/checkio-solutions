@@ -1,5 +1,4 @@
 class Warrior:
-
     def __init__(self):
         self.health = 50
         self.attack = 5
@@ -10,43 +9,35 @@ class Warrior:
 
 
 class Knight(Warrior):
-
     def __init__(self):
-        super().__init__()
+        self.health = 50
         self.attack = 7
 
 
-def fight(first, second):
-
-    while first.is_alive and second.is_alive:
-        second.health -= first.attack
-        if second.is_alive:
-            first.health -= second.attack
-
-    return first.is_alive
-
-
 class Army:
-
     def __init__(self):
         self.units = []
 
-    def add_units(self, utype, amount):
-        for unit in range(amount):
-            unit = utype()
-            self.units.append(unit)
+    def add_units(self, unit, num):
+        [self.units.append(unit()) for _ in range(num)]
 
 
 class Battle:
-
-    def fight(self, first, second):
-        while first.units and second.units:
-            if fight(first.units[0], second.units[0]):
-                second.units.pop(0)
+    def fight(self, a1, a2):
+        while a1.units and a2.units:
+            if fight(a1.units[0], a2.units[0]):
+                a2.units.pop(0)
             else:
-                first.units.pop(0)
+                a1.units.pop(0)
+        return bool(a1.units)
 
-        return len(first.units) > 0
+
+def fight(w1, w2):
+    while w1.is_alive and w2.is_alive:
+        w2.health -= w1.attack
+        if w2.is_alive:
+            w1.health -= w2.attack
+    return w1.is_alive
 
 
 if __name__ == '__main__':
