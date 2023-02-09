@@ -1,8 +1,11 @@
 class Warrior:
-
     def __init__(self):
         self.health = 50
         self.attack = 5
+        self.defence = 0
+
+    def get_hit(self, enemy):
+        self.health -= max(0, enemy.attack - self.defence)
 
     @property
     def is_alive(self):
@@ -10,72 +13,48 @@ class Warrior:
 
 
 class Knight(Warrior):
-
     def __init__(self):
         super().__init__()
         self.attack = 7
 
 
 class Defender(Warrior):
-
     def __init__(self):
-        super().__init__()
         self.health = 60
         self.attack = 3
         self.defence = 2
 
 
-def fight(first, second):
-
-    while first.is_alive and second.is_alive:
-
-        if isinstance(first, Defender):
-            second.health -= first.attack
-            if second.is_alive:
-                if second.attack > first.defence:
-                    first.health -= (second.attack - first.defence)
-
-        elif isinstance(second, Defender):
-            if first.attack > second.defence:
-                second.health -= (first.attack - second.defence)
-                if second.is_alive:
-                    first.health -= second.attack            
-
-        else:            
-            second.health -= first.attack
-            if second.is_alive:
-                first.health -= second.attack
-
-    return first.is_alive
-
-
 class Army:
-
     def __init__(self):
         self.units = []
 
-    def add_units(self, utype, amount):
-        for unit in range(amount):
-            unit = utype()
-            self.units.append(unit)
+    def add_units(self, unit, num):
+        [self.units.append(unit()) for _ in range(num)]
 
 
 class Battle:
-
-    def fight(self, first, second):
-        while first.units and second.units:
-            if fight(first.units[0], second.units[0]):
-                second.units.pop(0)
+    def fight(self, a1, a2):
+        while a1.units and a2.units:
+            if fight(a1.units[0], a2.units[0]):
+                a2.units.pop(0)
             else:
-                first.units.pop(0)
+                a1.units.pop(0)
+        return bool(a1.units)
 
-        return len(first.units) > 0
+
+def fight(w1, w2):
+    while w1.is_alive and w2.is_alive:
+        w2.get_hit(w1)
+        if w2.is_alive:
+            w1.get_hit(w2)
+    return w1.is_alive
 
 
 if __name__ == '__main__':
-    #These "asserts" using only for self-checking and not necessary for auto-testing
-    
-    #fight tests
+    # These "asserts" using only for self-checking and not necessary for auto-testing
+
+    # fight tests
     chuck = Warrior()
     bruce = Warrior()
     carl = Knight()
@@ -97,10 +76,10 @@ if __name__ == '__main__':
     assert fight(bob, mike) == False
     assert fight(lancelot, rog) == True
 
-    #battle tests
+    # battle tests
     my_army = Army()
     my_army.add_units(Defender, 1)
-    
+
     enemy_army = Army()
     enemy_army.add_units(Warrior, 2)
 
