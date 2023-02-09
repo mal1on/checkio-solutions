@@ -1,10 +1,14 @@
 class Warrior:
-
     def __init__(self):
         self.health = 50
         self.attack = 5
         self.defence = 0
         self.vampirism = 0
+
+    def hit(self, enemy):
+        dmg = max(0, self.attack - enemy.defence)
+        enemy.health -= dmg
+        self.health += self.vampirism * dmg
 
     @property
     def is_alive(self):
@@ -12,14 +16,12 @@ class Warrior:
 
 
 class Knight(Warrior):
-
     def __init__(self):
         super().__init__()
         self.attack = 7
 
 
 class Defender(Warrior):
-
     def __init__(self):
         super().__init__()
         self.health = 60
@@ -28,50 +30,37 @@ class Defender(Warrior):
 
 
 class Vampire(Warrior):
-
     def __init__(self):
         super().__init__()
         self.health = 40
         self.attack = 4
-        self.vampirism = 50
-
-
-def fight(first, second):
-
-    first_dmg = max(0, (first.attack - second.defence))
-    second_dmg = max(0, (second.attack - first.defence))
-
-    while first.is_alive and second.is_alive:
-
-        second.health -= first_dmg
-        first.health += first_dmg * (first.vampirism / 100)
-        if second.is_alive:
-            first.health -= second_dmg
-            second.health += second_dmg * (second.vampirism / 100)
-
-    return first.is_alive
+        self.vampirism = 0.5
 
 
 class Army:
-
     def __init__(self):
         self.units = []
 
-    def add_units(self, utype, amount):
-        for unit in range(amount):
-            self.units.append(utype())
+    def add_units(self, unit, num):
+        [self.units.append(unit()) for _ in range(num)]
 
 
 class Battle:
-
-    def fight(self, first, second):
-        while first.units and second.units:
-            if fight(first.units[0], second.units[0]):
-                second.units.pop(0)
+    def fight(self, a1, a2):
+        while a1.units and a2.units:
+            if fight(a1.units[0], a2.units[0]):
+                a2.units.pop(0)
             else:
-                first.units.pop(0)
+                a1.units.pop(0)
+        return bool(a1.units)
 
-        return len(first.units) > 0
+
+def fight(w1, w2):
+    while w1.is_alive and w2.is_alive:
+        w1.hit(w2)
+        if w2.is_alive:
+            w2.hit(w1)
+    return w1.is_alive
 
 
 if __name__ == '__main__':
