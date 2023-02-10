@@ -1,26 +1,28 @@
+from math import floor
+
+
 class Warrior:
     def __init__(self):
         self.health = 50
         self.attack = 5
-        self.defence = 0
+        self.defense = 0
         self.vampirism = 0
         self.heal_power = 0
         self.buddy = None
         self.max_health = self.health
 
     def hit(self, enemy):
-        dmg = max(0, self.attack - enemy.defence)
+        dmg = max(0, self.attack - enemy.defense)
         enemy.health -= dmg
-        self.health += self.vampirism * dmg
+        self.health += floor(self.vampirism * dmg)
         if self.buddy and isinstance(self.buddy, Healer):
             self.buddy.heal(self)
 
-    def equip_weapon(self, weapon):        
+    def equip_weapon(self, weapon):
         for k, v in vars(self).items():
             if k in vars(weapon) and v:
                 vars(self)[k] = max(0, vars(self)[k] + vars(weapon)[k])
-        self.max_health += weapon.health                
-
+        self.max_health += weapon.health
 
     @property
     def is_alive(self):
@@ -38,8 +40,7 @@ class Defender(Warrior):
         super().__init__()
         self.health = self.max_health = 60
         self.attack = 3
-        self.defence = 2
-
+        self.defense = 2
 
 
 class Vampire(Warrior):
@@ -56,8 +57,8 @@ class Lancer(Warrior):
         self.attack = 6
 
     def hit(self, enemy):
-        dmg = max(0, self.attack - enemy.defence)
-        half_dmg = max(0, self.attack / 2 - enemy.defence)
+        dmg = max(0, self.attack - enemy.defense)
+        half_dmg = max(0, self.attack / 2 - enemy.defense)
         enemy.health -= dmg
         if enemy.buddy:
             enemy.buddy.health -= half_dmg
@@ -108,7 +109,7 @@ class Battle:
 
 
 class Weapon:
-    def __init__(self, health=0, attack=0, defence=0, vampirism=0, heal_power=0):
+    def __init__(self, health=0, attack=0, defense=0, vampirism=0, heal_power=0):
         vars(self).update(locals())
         self.vampirism = vampirism / 100 if vampirism else 0
 
@@ -125,7 +126,7 @@ class Shield(Weapon):
         super().__init__()
         self.health = 20
         self.attack = -1
-        self.defence = 2
+        self.defense = 2
 
 
 class GreatAxe(Weapon):
@@ -133,7 +134,7 @@ class GreatAxe(Weapon):
         super().__init__()
         self.health = -15
         self.attack = 5
-        self.defence = -2
+        self.defense = -2
         self.vampirism = 0.1
 
 
@@ -142,7 +143,7 @@ class Katana(Weapon):
         super().__init__()
         self.health = -20
         self.attack = 6
-        self.defence = -5
+        self.defense = -5
         self.vampirism = 0.5
 
 
@@ -162,56 +163,60 @@ def fight(w1, w2):
     return w1.is_alive
 
 
-ogre = Warrior()
-lancelot = Knight()
-richard = Defender()
-eric = Vampire()
-freelancer = Lancer()
-priest = Healer()
+if __name__ == "__main__":
+    # These "asserts" using only for self-checking and not necessary for auto-testing
 
-sword = Sword()
-shield = Shield()
-axe = GreatAxe()
-katana = Katana()
-wand = MagicWand()
-super_weapon = Weapon(50, 10, 5, 150, 8)
+    ogre = Warrior()
+    lancelot = Knight()
+    richard = Defender()
+    eric = Vampire()
+    freelancer = Lancer()
+    priest = Healer()
 
-ogre.equip_weapon(sword)
-ogre.equip_weapon(shield)
-ogre.equip_weapon(super_weapon)
-lancelot.equip_weapon(super_weapon)
-richard.equip_weapon(shield)
-eric.equip_weapon(super_weapon)
-freelancer.equip_weapon(axe)
-freelancer.equip_weapon(katana)
-priest.equip_weapon(wand)
-priest.equip_weapon(shield)
+    sword = Sword()
+    shield = Shield()
+    axe = GreatAxe()
+    katana = Katana()
+    wand = MagicWand()
+    super_weapon = Weapon(50, 10, 5, 150, 8)
 
-print(ogre.health) == 125
-print(lancelot.attack) == 17
-print(richard.defence) == 4
-print(eric.vampirism) == 200
-print(freelancer.health) == 15
-print(priest.heal_power) == 5
+    ogre.equip_weapon(sword)
+    ogre.equip_weapon(shield)
+    ogre.equip_weapon(super_weapon)
+    lancelot.equip_weapon(super_weapon)
+    richard.equip_weapon(shield)
+    eric.equip_weapon(super_weapon)
+    freelancer.equip_weapon(axe)
+    freelancer.equip_weapon(katana)
+    priest.equip_weapon(wand)
+    priest.equip_weapon(shield)
 
-fight(ogre, eric) == False
-fight(priest, richard) == False
-fight(lancelot, freelancer) == True
+    ogre.health == 125
+    lancelot.attack == 17
+    richard.defense == 4
+    eric.vampirism == 200
+    freelancer.health == 15
+    priest.heal_power == 5
 
-my_army = Army()
-my_army.add_units(Knight, 1)
-my_army.add_units(Lancer, 1)
+    fight(ogre, eric) == False
+    fight(priest, richard) == False
+    fight(lancelot, freelancer) == True
 
-enemy_army = Army()
-enemy_army.add_units(Vampire, 1)
-enemy_army.add_units(Healer, 1)
+    my_army = Army()
+    my_army.add_units(Knight, 1)
+    my_army.add_units(Lancer, 1)
 
-my_army.units[0].equip_weapon(axe)
-my_army.units[1].equip_weapon(super_weapon)
+    enemy_army = Army()
+    enemy_army.add_units(Vampire, 1)
+    enemy_army.add_units(Healer, 1)
 
-enemy_army.units[0].equip_weapon(katana)
-enemy_army.units[1].equip_weapon(wand)
+    my_army.units[0].equip_weapon(axe)
+    my_army.units[1].equip_weapon(super_weapon)
 
-battle = Battle()
+    enemy_army.units[0].equip_weapon(katana)
+    enemy_army.units[1].equip_weapon(wand)
 
-print(battle.fight(my_army, enemy_army)) == True
+    battle = Battle()
+
+    battle.fight(my_army, enemy_army) == True
+    print("Coding complete? Let's try tests!")
