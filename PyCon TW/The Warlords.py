@@ -91,30 +91,56 @@ class Warlord(Warrior):
 class Army:
     def __init__(self):
         self.units = []
+        self.warlord = None
 
     def add_units(self, unit, num):
+        if isinstance(unit(), Warlord):
+            num = 0
+            if not self.warlord:
+                self.warlord = unit()
+                self.units.append(self.warlord)
+
         [self.units.append(unit()) for _ in range(num)]
-        warlords = [u for u in self.units if isinstance(u, Warlord)]
-        if warlords:
-            self.units = [u for u in self.units if not isinstance(
-                u, Warlord)] + [warlords[0]]
+
 
     def add_buddy(self):
         for unit, buddy in zip(self.units[:-1], self.units[1:]):
             unit.buddy = buddy
 
     def move_units(self):
-        pass
+        if self.warlord:
+            lancers = []
+            healers = []
+            soldiers = []
+
+            for unit in self.units:
+                if isinstance(unit, Lancer):
+                    lancers.append(unit)
+                elif isinstance(unit, Healer):
+                    healers.append(unit)
+                elif not isinstance(unit, Warlord):
+                    soldiers.append(unit)            
+
+            if lancers:
+                self.units = [lancers[0]] + healers + lancers[1:] + soldiers + [self.warlord]
+            elif soldiers:
+                self.units = [soldiers[0]] + healers + soldiers[1:] + [self.warlord]
+
+        else:
+            pass            
 
 
 class Battle:
     def fight(self, a1, a2):
         a1.add_buddy(), a2.add_buddy()
+        a1.move_units(), a2.move_units()
         while a1.units and a2.units:
             if fight(a1.units[0], a2.units[0]):
                 a2.units.pop(0)
+                a2.move_units()
             else:
                 a1.units.pop(0)
+                a1.move_units()
         return bool(a1.units)
 
     def straight_fight(self, a1, a2):
@@ -134,43 +160,27 @@ class Weapon:
 
 class Sword(Weapon):
     def __init__(self):
-        super().__init__()
-        self.health = 5
-        self.attack = 2
+        super().__init__(health=5, attack=2)
 
 
 class Shield(Weapon):
     def __init__(self):
-        super().__init__()
-        self.health = 20
-        self.attack = -1
-        self.defense = 2
+        super().__init__(health=20, attack=-1, defense=2)
 
 
 class GreatAxe(Weapon):
     def __init__(self):
-        super().__init__()
-        self.health = -15
-        self.attack = 5
-        self.defense = -2
-        self.vampirism = 0.1
+        super().__init__(health=-15, attack=5, defense=-2, vampirism=0.1)
 
 
 class Katana(Weapon):
     def __init__(self):
-        super().__init__()
-        self.health = -20
-        self.attack = 6
-        self.defense = -5
-        self.vampirism = 0.5
+        super().__init__(health=-20, attack=6, defense=-5, vampirism=0.5)
 
 
 class MagicWand(Weapon):
     def __init__(self):
-        super().__init__()
-        self.health = 30
-        self.attack = 3
-        self.heal_power = 3
+        super().__init__(health=30, attack=3, heal_power=3)
 
 
 def fight(w1, w2):
@@ -194,7 +204,6 @@ my_army.add_units(Healer, 2)
 
 enemy_army = Army()
 enemy_army.add_units(Warlord, 3)
-enemy_army.units
 enemy_army.add_units(Vampire, 1)
 enemy_army.add_units(Healer, 2)
 enemy_army.add_units(Knight, 2)
@@ -212,3 +221,7 @@ type(enemy_army.units[-2]) == Knight
 
 # 6, not 8, because only 1 Warlord per army could be
 len(enemy_army.units) == 6
+
+battle = Battle()
+
+print(battle.fight(my_army, enemy_army)) == True
