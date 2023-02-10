@@ -29,6 +29,10 @@ class Warrior:
         return self.health > 0
 
 
+    def __str__(self):
+        return f'{self.__class__.__name__} with {self.health}/{self.max_health} health'     
+
+
 class Knight(Warrior):
     def __init__(self):
         super().__init__()
@@ -75,6 +79,14 @@ class Healer(Warrior):
 
     def heal(self, unit):
         unit.health = min(unit.max_health, unit.health + self.heal_power)
+
+
+class Warlord(Warrior):
+    def __init__(self):
+        super().__init__()
+        self.health = self.max_health = 100
+        self.attack = 4
+        self.defense = 2        
 
 
 class Army:
@@ -163,60 +175,34 @@ def fight(w1, w2):
     return w1.is_alive
 
 
-if __name__ == "__main__":
-    # These "asserts" using only for self-checking and not necessary for auto-testing
+ronald = Warlord()
+heimdall = Knight()
 
-    ogre = Warrior()
-    lancelot = Knight()
-    richard = Defender()
-    eric = Vampire()
-    freelancer = Lancer()
-    priest = Healer()
+print(fight(heimdall, ronald)) == False
+print(ronald, heimdall)
 
-    sword = Sword()
-    shield = Shield()
-    axe = GreatAxe()
-    katana = Katana()
-    wand = MagicWand()
-    super_weapon = Weapon(50, 10, 5, 150, 8)
+# my_army = Army()
+# my_army.add_units(Warlord, 1)
+# my_army.add_units(Warrior, 2)
+# my_army.add_units(Lancer, 2)
+# my_army.add_units(Healer, 2)
 
-    ogre.equip_weapon(sword)
-    ogre.equip_weapon(shield)
-    ogre.equip_weapon(super_weapon)
-    lancelot.equip_weapon(super_weapon)
-    richard.equip_weapon(shield)
-    eric.equip_weapon(super_weapon)
-    freelancer.equip_weapon(axe)
-    freelancer.equip_weapon(katana)
-    priest.equip_weapon(wand)
-    priest.equip_weapon(shield)
+# enemy_army = Army()
+# enemy_army.add_units(Warlord, 3)
+# enemy_army.add_units(Vampire, 1)
+# enemy_army.add_units(Healer, 2)
+# enemy_army.add_units(Knight, 2)
 
-    ogre.health == 125
-    lancelot.attack == 17
-    richard.defense == 4
-    eric.vampirism == 200
-    freelancer.health == 15
-    priest.heal_power == 5
+# my_army.move_units()
+# enemy_army.move_units()
 
-    fight(ogre, eric) == False
-    fight(priest, richard) == False
-    fight(lancelot, freelancer) == True
+# type(my_army.units[0]) == Lancer
+# type(my_army.units[1]) == Healer
+# type(my_army.units[-1]) == Warlord
 
-    my_army = Army()
-    my_army.add_units(Knight, 1)
-    my_army.add_units(Lancer, 1)
+# type(enemy_army.units[0]) == Vampire
+# type(enemy_army.units[-1]) == Warlord
+# type(enemy_army.units[-2]) == Knight
 
-    enemy_army = Army()
-    enemy_army.add_units(Vampire, 1)
-    enemy_army.add_units(Healer, 1)
-
-    my_army.units[0].equip_weapon(axe)
-    my_army.units[1].equip_weapon(super_weapon)
-
-    enemy_army.units[0].equip_weapon(katana)
-    enemy_army.units[1].equip_weapon(wand)
-
-    battle = Battle()
-
-    battle.fight(my_army, enemy_army) == True
-    print("Coding complete? Let's try tests!")
+# #6, not 8, because only 1 Warlord per army could be
+# len(enemy_army.units) == 6
