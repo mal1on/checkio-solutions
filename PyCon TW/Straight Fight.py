@@ -88,6 +88,15 @@ class Battle:
                 a1.units.pop(0)
         return bool(a1.units)
 
+    def straight_fight(self, a1, a2):
+        while a1.units and a2.units:
+            for w1, w2 in zip(a1.units, a2.units):
+                fight(w1, w2)
+            a1.units = [u for u in a1.units if u.is_alive] 
+            a2.units = [u for u in a2.units if u.is_alive]
+        return bool(a1.units)    
+
+
 
 def fight(w1, w2):
     while w1.is_alive and w2.is_alive:
@@ -169,6 +178,6 @@ army_6.add_units(Lancer, 5)
 
 battle = Battle()
 
-battle.fight(my_army, enemy_army) == False
-battle.fight(army_3, army_4) == True
-battle.straight_fight(army_5, army_6) == False
+print(battle.fight(my_army, enemy_army)) == False
+print(battle.fight(army_3, army_4)) == True
+print(battle.straight_fight(army_5, army_6)) == False
