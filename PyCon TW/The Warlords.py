@@ -102,7 +102,6 @@ class Army:
 
         [self.units.append(unit()) for _ in range(num)]
 
-
     def add_buddy(self):
         for unit, buddy in zip(self.units[:-1], self.units[1:]):
             unit.buddy = buddy
@@ -119,15 +118,17 @@ class Army:
                 elif isinstance(unit, Healer):
                     healers.append(unit)
                 elif not isinstance(unit, Warlord):
-                    soldiers.append(unit)            
+                    soldiers.append(unit)
 
             if lancers:
-                self.units = [lancers[0]] + healers + lancers[1:] + soldiers + [self.warlord]
+                self.units = [lancers[0]] + healers + \
+                    lancers[1:] + soldiers + [self.warlord]
             elif soldiers:
-                self.units = [soldiers[0]] + healers + soldiers[1:] + [self.warlord]
+                self.units = [soldiers[0]] + healers + \
+                    soldiers[1:] + [self.warlord]
 
         else:
-            pass            
+            pass
 
 
 class Battle:
@@ -191,37 +192,41 @@ def fight(w1, w2):
     return w1.is_alive
 
 
-ronald = Warlord()
-heimdall = Knight()
+if __name__ == '__main__':
+    # These "asserts" using only for self-checking and not necessary for auto-testing
 
-fight(heimdall, ronald) == False
+    ronald = Warlord()
+    heimdall = Knight()
 
-my_army = Army()
-my_army.add_units(Warlord, 1)
-my_army.add_units(Warrior, 2)
-my_army.add_units(Lancer, 2)
-my_army.add_units(Healer, 2)
+    assert fight(heimdall, ronald) == False
 
-enemy_army = Army()
-enemy_army.add_units(Warlord, 3)
-enemy_army.add_units(Vampire, 1)
-enemy_army.add_units(Healer, 2)
-enemy_army.add_units(Knight, 2)
+    my_army = Army()
+    my_army.add_units(Warlord, 1)
+    my_army.add_units(Warrior, 2)
+    my_army.add_units(Lancer, 2)
+    my_army.add_units(Healer, 2)
 
-my_army.move_units()
-enemy_army.move_units()
+    enemy_army = Army()
+    enemy_army.add_units(Warlord, 3)
+    enemy_army.add_units(Vampire, 1)
+    enemy_army.add_units(Healer, 2)
+    enemy_army.add_units(Knight, 2)
 
-type(my_army.units[0]) == Lancer
-type(my_army.units[1]) == Healer
-type(my_army.units[-1]) == Warlord
+    my_army.move_units()
+    enemy_army.move_units()
 
-type(enemy_army.units[0]) == Vampire
-type(enemy_army.units[-1]) == Warlord
-type(enemy_army.units[-2]) == Knight
+    assert type(my_army.units[0]) == Lancer
+    assert type(my_army.units[1]) == Healer
+    assert type(my_army.units[-1]) == Warlord
 
-# 6, not 8, because only 1 Warlord per army could be
-len(enemy_army.units) == 6
+    assert type(enemy_army.units[0]) == Vampire
+    assert type(enemy_army.units[-1]) == Warlord
+    assert type(enemy_army.units[-2]) == Knight
 
-battle = Battle()
+    # 6, not 8, because only 1 Warlord per army could be
+    assert len(enemy_army.units) == 6
 
-print(battle.fight(my_army, enemy_army)) == True
+    battle = Battle()
+
+    assert battle.fight(my_army, enemy_army) == True
+    print("Coding complete? Let's try tests!")
