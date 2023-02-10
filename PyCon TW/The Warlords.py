@@ -133,15 +133,17 @@ class Army:
 
 class Battle:
     def fight(self, a1, a2):
-        a1.add_buddy(), a2.add_buddy()
         a1.move_units(), a2.move_units()
+        a1.add_buddy(), a2.add_buddy()
         while a1.units and a2.units:
             if fight(a1.units[0], a2.units[0]):
                 a2.units.pop(0)
                 a2.move_units()
+                a2.add_buddy()
             else:
                 a1.units.pop(0)
                 a1.move_units()
+                a1.add_buddy()
         return bool(a1.units)
 
     def straight_fight(self, a1, a2):
@@ -176,7 +178,7 @@ class GreatAxe(Weapon):
 
 class Katana(Weapon):
     def __init__(self):
-        super().__init__(health=-20, attack=6, defense=-5, vampirism=0.5)
+        super().__init__(health=-20, attack=6, defense=-5, vampirism=50)
 
 
 class MagicWand(Weapon):
