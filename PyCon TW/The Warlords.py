@@ -28,9 +28,8 @@ class Warrior:
     def is_alive(self):
         return self.health > 0
 
-
     def __str__(self):
-        return f'{self.__class__.__name__} with {self.health}/{self.max_health} health'     
+        return f'{self.__class__.__name__} with {self.health}/{self.max_health} health'
 
 
 class Knight(Warrior):
@@ -86,7 +85,7 @@ class Warlord(Warrior):
         super().__init__()
         self.health = self.max_health = 100
         self.attack = 4
-        self.defense = 2        
+        self.defense = 2
 
 
 class Army:
@@ -95,10 +94,17 @@ class Army:
 
     def add_units(self, unit, num):
         [self.units.append(unit()) for _ in range(num)]
+        warlords = [u for u in self.units if isinstance(u, Warlord)]
+        if warlords:
+            self.units = [u for u in self.units if not isinstance(
+                u, Warlord)] + [warlords[0]]
 
     def add_buddy(self):
         for unit, buddy in zip(self.units[:-1], self.units[1:]):
             unit.buddy = buddy
+
+    def move_units(self):
+        pass
 
 
 class Battle:
@@ -178,31 +184,31 @@ def fight(w1, w2):
 ronald = Warlord()
 heimdall = Knight()
 
-print(fight(heimdall, ronald)) == False
-print(ronald, heimdall)
+fight(heimdall, ronald) == False
 
-# my_army = Army()
-# my_army.add_units(Warlord, 1)
-# my_army.add_units(Warrior, 2)
-# my_army.add_units(Lancer, 2)
-# my_army.add_units(Healer, 2)
+my_army = Army()
+my_army.add_units(Warlord, 1)
+my_army.add_units(Warrior, 2)
+my_army.add_units(Lancer, 2)
+my_army.add_units(Healer, 2)
 
-# enemy_army = Army()
-# enemy_army.add_units(Warlord, 3)
-# enemy_army.add_units(Vampire, 1)
-# enemy_army.add_units(Healer, 2)
-# enemy_army.add_units(Knight, 2)
+enemy_army = Army()
+enemy_army.add_units(Warlord, 3)
+enemy_army.units
+enemy_army.add_units(Vampire, 1)
+enemy_army.add_units(Healer, 2)
+enemy_army.add_units(Knight, 2)
 
-# my_army.move_units()
-# enemy_army.move_units()
+my_army.move_units()
+enemy_army.move_units()
 
-# type(my_army.units[0]) == Lancer
-# type(my_army.units[1]) == Healer
-# type(my_army.units[-1]) == Warlord
+type(my_army.units[0]) == Lancer
+type(my_army.units[1]) == Healer
+type(my_army.units[-1]) == Warlord
 
-# type(enemy_army.units[0]) == Vampire
-# type(enemy_army.units[-1]) == Warlord
-# type(enemy_army.units[-2]) == Knight
+type(enemy_army.units[0]) == Vampire
+type(enemy_army.units[-1]) == Warlord
+type(enemy_army.units[-2]) == Knight
 
-# #6, not 8, because only 1 Warlord per army could be
-# len(enemy_army.units) == 6
+# 6, not 8, because only 1 Warlord per army could be
+len(enemy_army.units) == 6
