@@ -4,21 +4,24 @@ from itertools import cycle
 class Lamp:
     def __init__(self):
         self.colors = (c for c in cycle(['Green', 'Red', 'Blue', 'Yellow']))
+
     def light(self):
-        return next(self.colors)    
+        return next(self.colors)
 
 
+if __name__ == '__main__':
+    # These "asserts" using only for self-checking and not necessary for auto-testing
 
+    lamp_1 = Lamp()
+    lamp_2 = Lamp()
 
-lamp_1 = Lamp()
-lamp_2 = Lamp()
+    lamp_1.light()  # Green
+    lamp_1.light()  # Red
+    lamp_2.light()  # Green
 
-print(lamp_1.light()) #Green
-print(lamp_1.light()) #Red
-print(lamp_2.light()) #Green
-    
-print(lamp_1.light()) == "Blue"
-print(lamp_1.light()) == "Yellow"
-print(lamp_1.light()) == "Green"
-print(lamp_2.light()) == "Red"
-print(lamp_2.light()) == "Blue"
+    assert lamp_1.light() == "Blue"
+    assert lamp_1.light() == "Yellow"
+    assert lamp_1.light() == "Green"
+    assert lamp_2.light() == "Red"
+    assert lamp_2.light() == "Blue"
+    print("Coding complete? Let's try tests!")
