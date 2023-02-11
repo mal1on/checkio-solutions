@@ -1,5 +1,11 @@
+from itertools import cycle
+
+
 class Lamp:
-    pass
+    def __init__(self):
+        self.colors = (c for c in cycle(['Green', 'Red', 'Blue', 'Yellow']))
+    def light(self):
+        return next(self.colors)    
 
 
 
@@ -7,12 +13,12 @@ class Lamp:
 lamp_1 = Lamp()
 lamp_2 = Lamp()
 
-lamp_1.light() #Green
-lamp_1.light() #Red
-lamp_2.light() #Green
+print(lamp_1.light()) #Green
+print(lamp_1.light()) #Red
+print(lamp_2.light()) #Green
     
-lamp_1.light() == "Blue"
-lamp_1.light() == "Yellow"
-lamp_1.light() == "Green"
-lamp_2.light() == "Red"
-lamp_2.light() == "Blue"    
+print(lamp_1.light()) == "Blue"
+print(lamp_1.light()) == "Yellow"
+print(lamp_1.light()) == "Green"
+print(lamp_2.light()) == "Red"
+print(lamp_2.light()) == "Blue"
