@@ -7,7 +7,8 @@ def fibo_poem(text: str) -> str:
         result += (' '.join(text[:a]) + '\n')
         text = text[a:]
 
-    if text: result += ' '.join(text) + ' _' * (b - len(text))
+    if text:
+        result += ' '.join(text) + ' _' * (b - len(text))
 
     return result.rstrip()
 
