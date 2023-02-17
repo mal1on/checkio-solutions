@@ -1,11 +1,12 @@
 from operator import add, sub
+from re import findall
 
 
 def my_reduce(operators, numbers):
-    it = iter(numbers)
+    nums = iter(numbers)
     ops = iter(operators)
-    value = next(it)
-    for element in it:
+    value = next(nums)
+    for element in nums:
         op = next(ops)
         match op:
             case '+':
@@ -19,32 +20,13 @@ def my_reduce(operators, numbers):
 
 
 def calculator(log):
-    ops, nums = [], []
-    op, num = None, ''
+
     log = log if log else '0'
-    for ch in log:
-        if ch.isnumeric():
-            num += ch
-            if op:
-                ops.append(op)
-                op = None
-        else:
-            op = ch
-            if num:
-                nums.append(num.lstrip('0'))
-            num = ''
-    if num:
-        nums.append(num.lstrip('0'))
-    if op:
-        ops.append(op)
+    nums = list(map(int, findall('\\d+', log)))
+    nums = nums if log[0].isdigit() else [0] + nums
+    ops = findall('\\D', log)
 
-    nums = nums if any(nums) else ['0']
-    nums = list(map(int, nums))
-
-    if not log[0].isnumeric():
-        nums = [0] + nums
-
-    return str(nums[-1]) if log[-1].isnumeric() else str(my_reduce(ops, nums))
+    return str(nums[-1]) if log[-1].isdigit() else str(my_reduce(ops, nums))
 
 
 print("Example:")
