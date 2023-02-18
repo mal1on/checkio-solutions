@@ -6,15 +6,23 @@ def my_reduce(operators, numbers):
     nums = iter(numbers)
     ops = iter(operators)
     value = next(nums)
-    for element in nums:
+    for ind, element in enumerate(nums):
         op = next(ops)
-        match op:
-            case '+':
-                function = add
-            case '-':
-                function = sub
-            case '=':
-                def function(a, b): return b
+        if op.endswith('+'):
+            function = add
+        elif op.endswith('-'):
+            function = sub
+        elif op == '=':
+            function = lambda a, b: b
+        elif op == '==':
+            value = function(value, numbers[ind])
+            continue
+        elif op == '+=':
+            value = add(value, numbers[ind])
+            continue
+        elif op == '-=':
+            value = sub(value, numbers[ind])
+            continue
         value = function(value, element)
     return value
 
@@ -24,7 +32,8 @@ def calculator(log):
     log = log if log else '0'
     nums = list(map(int, findall('\\d+', log)))
     nums = nums if log[0].isdigit() else [0] + nums
-    ops = findall('\\D', log)
+    ops = findall('\\D+', log)
+    nums = nums if ops[-1] not in ['==', '+=', '-='] else nums + [0]
 
     print(str(nums[-1]) if log[-1].isdigit() else str(my_reduce(ops, nums)))
 
