@@ -1,5 +1,17 @@
 def reveal_num(line):
+    dot = True
+    sign = ''
+    result = ''
+    for char in line:
+        if char == '.' and dot:
+            result += char
+            dot = False
+        elif char.isdigit():
+            result += char
+        elif char in ['-', '+'] and not result:
+            sign = char
 
+    print(eval(sign + result) if result else None)
 
 
 
