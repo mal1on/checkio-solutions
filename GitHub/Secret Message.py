@@ -1,9 +1,15 @@
 def find_message(message):
-    print(''.join([ch for ch in message if ch.isupper()]))
+    return ''.join(ch for ch in message if ch.isupper())
 
 
+if __name__ == '__main__':
+    print("Example:")
+    print(find_message(('How are you? Eh, ok. Low or Lower? '
+                        + 'Ohhh.')))
 
-find_message(('How are you? Eh, ok. Low or Lower? '
- 'Ohhh.')) == 'HELLO'
-find_message('hello world!') == ''
-find_message('HELLO WORLD!!!') == 'HELLOWORLD'
+    # These "asserts" are used for self-checking and not for an auto-testing
+    assert find_message(('How are you? Eh, ok. Low or Lower? '
+                         + 'Ohhh.')) == 'HELLO'
+    assert find_message('hello world!') == ''
+    assert find_message('HELLO WORLD!!!') == 'HELLOWORLD'
+    print("Coding complete? Click 'Check' to earn cool rewards!")
