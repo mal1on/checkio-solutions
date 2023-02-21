@@ -1,5 +1,7 @@
 def checkio(n, m):
-    return 0
+    n = str(bin(n))[2:].zfill(20)
+    m = str(bin(m))[2:].zfill(20)
+    print(len(list(filter(lambda a: len(set(a)) > 1, zip(n, m)))))
 
 
 
