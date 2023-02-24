@@ -1,5 +1,15 @@
 def winning_die(enemy_die):
-    return []
+    my_die = []
+    a, b = divmod(len(enemy_die), 2)
+    win = a + 1
+    rest = a if b else a - 1
+    for i in sorted(enemy_die)[:win]:
+        my_die.append(i + 1)
+    for i in sorted(enemy_die)[win:]:
+        my_die.append(i - win // rest)
+    print([] if enemy_die == list(range(1, len(enemy_die)+1)) else my_die)
+
+
 
 
 
