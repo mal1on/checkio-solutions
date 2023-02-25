@@ -1,5 +1,8 @@
-def checkio(str_number: str, radix: int) -> int:
-    return -1
+def checkio(str_number, radix):
+    try:
+        return int(str_number, radix)
+    except:
+        return -1
 
 
 
