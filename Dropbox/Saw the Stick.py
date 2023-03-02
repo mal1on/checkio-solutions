@@ -1,5 +1,20 @@
 def checkio(number):
-
+    triangulars = [0]
+    current = 1
+    while triangulars[-1] < number:
+        triangulars.append(triangulars[-1] + current)
+        current += 1
+    results = []
+    for ind, num in enumerate(triangulars):
+        result = []
+        for item in triangulars[ind:]:
+            result.append(item)
+            if sum(result) == number:
+                results.append(result)
+                break
+            elif sum(result) > number:
+                result = []
+    print(results[0] if results else [])
 
 
 
