@@ -1,5 +1,5 @@
 def power_supply(network, power_plants):
-    return set([])
+    print(power_plants)
 
 
 
