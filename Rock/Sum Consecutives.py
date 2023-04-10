@@ -11,12 +11,18 @@ def sum_consecutives(a):
                 result.append(current_sum)
                 current_sum = current = i
         result.append(current_sum)
-        print(result)
+    return result
 
 
-sum_consecutives([1, 1, 1, 1]) == [4]
-sum_consecutives([1, 1, 2, 2]) == [2, 4]
-sum_consecutives([1, 1, 2, 1]) == [2, 2, 1]
-sum_consecutives([3, 3, 3, 4, 4, 5, 6, 6]) == [9, 8, 5, 12]
-sum_consecutives([1]) == [1]
-sum_consecutives([]) == []
+if __name__ == '__main__':
+    print("Example:")
+    print(list(sum_consecutives([1, 1, 1, 1])))
+
+    # These "asserts" are used for self-checking and not for an auto-testing
+    assert list(sum_consecutives([1, 1, 1, 1])) == [4]
+    assert list(sum_consecutives([1, 1, 2, 2])) == [2, 4]
+    assert list(sum_consecutives([1, 1, 2, 1])) == [2, 2, 1]
+    assert list(sum_consecutives([3, 3, 3, 4, 4, 5, 6, 6])) == [9, 8, 5, 12]
+    assert list(sum_consecutives([1])) == [1]
+    assert list(sum_consecutives([])) == []
+    print("Coding complete? Click 'Check' to earn cool rewards!")
