@@ -1,21 +1,34 @@
-import re
+from collections import Counter as ct
 
 
 def halloween_monsters(spell: str) -> int:
 
-    monsters = sorted(['skeleton', 'ghost', 'jack', 'vampire',
-                'witch', 'mummy', 'zombie', 'werewolf', 'frankenstein'], key=len)
+    monsters = ['skeleton', 'ghost', 'jack', 'vampire',
+                'witch', 'mummy', 'zombie', 'werewolf', 'frankenstein']
 
-    found = []
-    for monster in monsters:
-        while all(c in spell for c in monster):
-            found.append(monster)
-            for c in set(monster):
-                spell = spell.replace(c, '', monster.count(c))
-    print(found, spell)
+    counts = []
+    for turn in range(len(monsters)):
+        found = []
+        working_spell = spell
+        for monster in monsters:
+            while all(ct(working_spell)[char] >= ct(monster)[char] for char in ct(monster)):
+                found.append(monster)
+                for c in monster:
+                    working_spell = working_spell.replace(c, '', 1)
+        counts.append(len(found))
+        monsters = monsters[1:] + monsters[:1]
+
+    return max(counts)
 
 
-
-
-halloween_monsters('tkjagchso') == 2               # jack, ghost
-halloween_monsters('finhtiistchwwaerecnnkt') == 3  # witch, witch, frankenstein
+if __name__ == "__main__":
+    assert halloween_monsters("casjokthg") == 2, "jack ghost"
+    assert halloween_monsters(
+        "leumooeeyzwwmmirbmf") == 3, "mummy zombie werewolf"
+    assert halloween_monsters(
+        "nafrweiicttwneshhtikcn") == 3, "witch witch frankenstein"
+    assert halloween_monsters(
+        "kenoistcepajmlvre") == 2, "skeleton vampire (not jack)"
+    assert halloween_monsters(
+        "miaimavrurymepepv") == 2, "vampire vampire (not mummy)"
+    print("Your spell seem to be okay. It's time to check.")
