@@ -6,12 +6,7 @@ def power_supply(network, power_plants):
         if power_plants[pp] == 0:
             tree = []
         elif power_plants[pp] == 1:
-            tree = [[pp]] + [mult * [] for mult in range(power_plants[pp])]
-            for a, b in sorted(network, key=lambda con: pp in con, reverse=True):
-                if a == pp:
-                    tree[1].append(b)
-                if b == pp:
-                    tree[1].append(a)
+            tree = [[c for con in network for c in con if pp in con and c != pp]]
         else:
             tree = [[pp]] + [mult * [] for mult in range(power_plants[pp])]
             for depth in range(1, power_plants[pp]):
