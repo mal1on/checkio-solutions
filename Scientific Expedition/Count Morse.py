@@ -1,3 +1,5 @@
+from itertools import permutations as pm
+
 D = {
     "a": ".-",
     "b": "-...",
@@ -29,9 +31,8 @@ D = {
 
 
 def count_morse(message: str, letters: str) -> int:
-    # your code here
-    return 0
 
+    print(len([perm for perm in pm(letters) if message == ''.join([D[c] for c in perm])]))
 
 
 
