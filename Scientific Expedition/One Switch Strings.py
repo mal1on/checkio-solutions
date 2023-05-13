@@ -1,7 +1,7 @@
 def switch_strings(line: str, result: str) -> bool:
 
     count = 0
-    if all(line.count(l) == result.count(l) for l in set(line)):
+    if sorted(line) == sorted(result):
         for ind, char in enumerate(line):
             if char != result[ind]:
                 count += 1
