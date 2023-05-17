@@ -8,19 +8,20 @@ def diffs(num1, num2):
 
 def checkio(numbers):
 
-    chain = deque([numbers[-1]])
-    nums_dict = {number: [n for n in numbers[:-1]
-                          if diffs(number, n) == 1] for number in numbers}
+    nums_dict = {number: [n for n in numbers if diffs(
+        number, n) == 1] for number in numbers}
+    chain = deque([(numbers[0], [numbers[0]])])
+    visited = set()
 
-    while chain[0] != numbers[0]:
-        for number in numbers:
-            if number == chain[0]:
-                close_nums = [num for num in nums_dict[number]
-                              if num not in chain]
-                count = [(el, diffs(el, numbers[0])) for el in close_nums]
-                chain.appendleft(min(count, key=lambda a: a[1])[0])
-    return list(chain)
-
+    while chain:
+        current, path = chain.popleft()
+        if current == numbers[-1]:
+            return path
+        visited.add(current)
+        for num in nums_dict[current]:
+            if num not in visited:
+                chain.append((num, path + [num]))
+    return []
 
 
 # These "asserts" using only for self-checking and not necessary for auto-testing
