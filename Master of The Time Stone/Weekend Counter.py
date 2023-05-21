@@ -1,11 +1,18 @@
-from datetime import date
+from datetime import date, timedelta
 
 
 def checkio(from_date, to_date):
     """
         Count the days of rest
     """
-    return 0
+    weekends = 0
+    while from_date <= to_date:
+        if from_date.isoweekday() in [6, 7]:
+            weekends += 1
+        from_date += timedelta(1)
+    print(weekends)
+
+
 
 
 
