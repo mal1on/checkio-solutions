@@ -1,10 +1,12 @@
 from datetime import date
+from collections import namedtuple as nt
 
 
 def next_birthday(today, birthdates):
 
     today = date(*today)
-    next_bds = {}
+    family = []
+    Sibling = nt('Sibling', ['name', 'days', 'age'])
 
     for bd in birthdates.items():
         try:
@@ -14,26 +16,30 @@ def next_birthday(today, birthdates):
         if today <= temp_date:
             try:
                 next_bd = date(today.year, bd[1][1], bd[1][2])
-                next_bds[bd[0]] = ((next_bd - today).days,
-                                   {bd[0]: next_bd.year - date(*bd[1]).year})
+                sibling = Sibling(bd[0], (next_bd - today).days,
+                                  next_bd.year - date(*bd[1]).year)
+                family.append(sibling)
             except(ValueError):
                 next_bd = date(today.year, bd[1][1] + 1, 1)
-                next_bds[bd[0]] = ((next_bd - today).days,
-                                   {bd[0]: next_bd.year - date(*bd[1]).year})
+                sibling = Sibling(bd[0], (next_bd - today).days,
+                                  next_bd.year - date(*bd[1]).year)
+                family.append(sibling)
         else:
             try:
                 next_bd = date(today.year + 1, bd[1][1], bd[1][2])
-                next_bds[bd[0]] = ((next_bd - today).days,
-                                   {bd[0]: next_bd.year - date(*bd[1]).year})
+                sibling = Sibling(bd[0], (next_bd - today).days,
+                                  next_bd.year - date(*bd[1]).year)
+                family.append(sibling)
             except(ValueError):
                 next_bd = date(today.year + 1, bd[1][1] + 1, 1)
-                next_bds[bd[0]] = ((next_bd - today).days,
-                                   {bd[0]: next_bd.year - date(*bd[1]).year})
+                sibling = Sibling(bd[0], (next_bd - today).days,
+                                  next_bd.year - date(*bd[1]).year)
+                family.append(sibling)
 
-    next = ([bd[1] for bd in next_bds.items() if bd[1][0] ==
-             min(next_bds.items(), key=lambda t: t[1][0])[1][0]])
+    next_bd = ([(s.days, {s.name: s.age}) for s in family if s.days == min(
+        family, key=lambda s: s.days).days])
 
-    return next[0] if len(next) == 1 else (next[0][0], {**next[0][1], **next[1][1]})
+    return next_bd[0] if len(next_bd) == 1 else (next_bd[0][0], {**next_bd[0][1], **next_bd[1][1]})
 
 
 if __name__ == '__main__':
