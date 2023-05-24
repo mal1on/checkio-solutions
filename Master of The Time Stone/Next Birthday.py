@@ -1,6 +1,33 @@
+from datetime import date
+from calendar import isleap
+
+
 def next_birthday(today, birthdates):
 
-    return []
+    today = date(*today)
+    next_bds = {}
+
+    for bd in birthdates.items():
+        try:
+            temp_date = date(today.year, bd[1][1], bd[1][2])
+        except(ValueError):
+            temp_date = date(today.year, bd[1][1] + 1, 1)
+        if today <= temp_date:
+            try:
+                next_bd = date(today.year, bd[1][1], bd[1][2])
+                next_bds[bd[0]] = ((next_bd - today).days, {bd[0]:next_bd.year - date(*bd[1]).year})
+            except(ValueError):
+                next_bd = date(today.year, bd[1][1] +1, 1)
+                next_bds[bd[0]] = ((next_bd - today).days, {bd[0]:next_bd.year - date(*bd[1]).year})
+        else:
+            try:
+                next_bd = date(today.year + 1, bd[1][1], bd[1][2])
+                next_bds[bd[0]] = ((next_bd - today).days, {bd[0]:next_bd.year - date(*bd[1]).year})
+            except(ValueError):
+                next_bd = date(today.year + 1, bd[1][1] + 1, 1)
+                next_bds[bd[0]] = ((next_bd - today).days, {bd[0]:next_bd.year - date(*bd[1]).year})
+
+    print(min(next_bds.items(), key=lambda t: t[1][0])[1])
 
 
 
