@@ -22,20 +22,20 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]], start_watching: 
         lighted += l
 
     lighted.sort(key=lambda t: t[0])
-    new_els = [lighted[0]]
+    light_ints = [lighted[0]]
     for on, off in lighted[1:]:
-        if on <= new_els[-1][1] < off:
-            new_els[-1] = (new_els[-1][0], off)
+        if on <= light_ints[-1][1] < off:
+            light_ints[-1] = (light_ints[-1][0], off)
         else:
-            new_els.append((on, off))
+            light_ints.append((on, off))
 
-    result = []
+    new_els = []
 
-    for on, off in new_els:
+    for on, off in light_ints:
         if end_watching > on and start_watching < off:
-            result.append((max(on, start_watching), min(off, end_watching)))
+            new_els.append((max(on, start_watching), min(off, end_watching)))
 
-    print(sum([(off - on).total_seconds() for on, off in result]))
+    print(sum([(off - on).total_seconds() for on, off in new_els]))
 
 
 sum_light([
