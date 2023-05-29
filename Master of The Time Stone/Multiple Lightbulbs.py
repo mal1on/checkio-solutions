@@ -9,9 +9,8 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]], start_watching: 
         if isinstance(el, datetime):
             els[i] = (el, 1)
 
-    start_watching = els[0][0] if not start_watching else start_watching
-    end_watching = els[-1][0] if not end_watching else end_watching
-
+    start_watching = start_watching or els[0][0]
+    end_watching = end_watching or els[-1][0]
     bulbs = {k: [d[0] for d in list(g)] for k, g in groupby(
         sorted(els, key=lambda el: el[1]), key=lambda el: el[1])}
 
@@ -27,7 +26,7 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]], start_watching: 
 
     light_ints = [lighted[0]]
     for on, off in lighted[1:]:
-        if on <= light_ints[-1][1] < off:
+        if on <= light_ints[-1][1] <= off:
             light_ints[-1] = (light_ints[-1][0], off)
         else:
             light_ints.append((on, off))
@@ -35,7 +34,7 @@ def sum_light(els: List[Union[datetime, Tuple[datetime, int]]], start_watching: 
     new_els = []
 
     for on, off in light_ints:
-        if on < end_watching and off > start_watching and all(off != end_watching for on, off in new_els):
+        if on < end_watching and off > start_watching:
             new_els.append((max(on, start_watching), min(off, end_watching)))
 
     return sum([(off - on).total_seconds() for on, off in new_els])
