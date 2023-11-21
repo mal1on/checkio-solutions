@@ -4,7 +4,7 @@ def most_wanted(text: str) -> str:
 
     c = Counter(char for char in text.lower() if char.isalpha())
     max_count = c.most_common(1)[0][1]
-    return [el for el in c if c[el] == max_count]
+    return [l for l in c if c[l] == max_count]
 
 
 if __name__ == '__main__':
