@@ -65,10 +65,18 @@ def braille_page(text: str) -> list[list[int]]:
     for ch in text:
         if ch in ascii_lowercase:
             result.append(LETTERS_NUMBERS[ord(ch) - 97])
+        elif ch in ascii_uppercase:
+            result.append([CAPITAL_FORMAT] + [LETTERS_NUMBERS[ord(ch) - 97]])
+        elif ch.isdigit():
+            result.append([NUMBER_FORMAT] + [LETTERS_NUMBERS[ord(ch) - 49]])
+        elif ch in PUNCTUATION.keys():
+            result.append(PUNCTUATION[ch])
+        elif ch == ' ':
+            result.append([[0, 0], [0, 0], [0, 0]])
 
     return result
 
 
 
 
-print(braille_page('abc'))
+print(braille_page('!'))
