@@ -55,11 +55,20 @@ PUNCTUATION = {
 WHITESPACE = convert(0)
 
 
+from string import ascii_lowercase, ascii_uppercase
+
+
 def braille_page(text: str) -> list[list[int]]:
-    # your code here
-    print(LETTERS_NUMBERS)
-    return []
+
+    result = []
+
+    for ch in text:
+        if ch in ascii_lowercase:
+            result.append(LETTERS_NUMBERS[ord(ch) - 97])
+
+    return result
 
 
 
-print(braille_page('42'))
+
+print(braille_page('abc'))
