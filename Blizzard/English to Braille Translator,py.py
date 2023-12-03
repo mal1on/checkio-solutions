@@ -76,37 +76,29 @@ def braille_page(text: str) -> list[list[int]]:
         elif ch == ' ':
             brailles.append([[0, 0], [0, 0], [0, 0]])
 
-    # result = [[e[0], e[1], 0] for b in list(zip(*brailles)) for e in b]
-
-    result = []
-    row = []
+    first_row, second_row, third_row, result = [], [], [], []
     count = 0
 
-    for b in list(zip(*brailles)):
-        for e in b:
-            if count < 9:
-                temp = []
-                temp.append(e[0])
-                temp.append(e[1])
-                temp.append(0)
-                row.extend(temp)
-                count += 1
-            else:
-                temp = []
-                temp.append(e[0])
-                temp.append(e[1])
-                row.extend(temp)
-                result.append(row)
-                result.extend([[0] * 29])
+    for b in brailles:
+        if count < 9:
+            first_row.extend([b[0][0], b[0][1], 0])
+            second_row.extend([b[1][0], b[1][1], 0])
+            third_row.extend([b[2][0], b[2][1], 0])
+            count += 1
+        else:
+            first_row.extend([b[0][0], b[0][1]])
+            second_row.extend([b[1][0], b[1][1]])
+            third_row.extend([b[2][0], b[2][1]])
+            result.extend([first_row, second_row, third_row, [0] * 29])
+            first_row, second_row, third_row = [], [], []
+            count = 0
 
-                count = 0
-                row = []
-
-    print(result)
+    if len(brailles) > 10:
+        ext = [(29 - len(first_row)) * [0]][0]
+        result.extend([first_row + ext, second_row + ext, third_row + ext])
+    else:
+        result.extend([first_row[:-1], second_row[:-1], third_row[:-1]])
 
     return result
 
-
-
-
-print(braille_page('hello 1st World!'))
+print(braille_page('CODE'))
