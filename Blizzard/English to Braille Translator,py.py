@@ -77,10 +77,10 @@ def braille_page(text: str) -> list[list[int]]:
             brailles.append([[0, 0], [0, 0], [0, 0]])
 
     first_row, second_row, third_row, result = [], [], [], []
-    count = 0
+    count = 1
 
     for b in brailles:
-        if count < 9:
+        if count < 10:
             first_row.extend([b[0][0], b[0][1], 0])
             second_row.extend([b[1][0], b[1][1], 0])
             third_row.extend([b[2][0], b[2][1], 0])
@@ -91,14 +91,251 @@ def braille_page(text: str) -> list[list[int]]:
             third_row.extend([b[2][0], b[2][1]])
             result.extend([first_row, second_row, third_row, [0] * 29])
             first_row, second_row, third_row = [], [], []
-            count = 0
+            count = 1
 
-    if len(brailles) > 10:
+    if len(brailles) < 10:
+        result.extend([first_row[:-1], second_row[:-1], third_row[:-1]])
+    elif len(brailles) % 10 == 0:
+        result = result[:-1]
+    else:
         ext = [(29 - len(first_row)) * [0]][0]
         result.extend([first_row + ext, second_row + ext, third_row + ext])
-    else:
-        result.extend([first_row[:-1], second_row[:-1], third_row[:-1]])
 
     return result
 
-print(braille_page('CODE'))
+
+print("Example:")
+print(braille_page("hello 1st World!"))
+
+# These "asserts" are used for self-checking
+assert braille_page("hello 1st World!") == [
+    [
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        1,
+    ],
+    [
+        1,
+        1,
+        0,
+        0,
+        1,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        1,
+        1,
+    ],
+    [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+    ],
+    [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+    ],
+    [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+    ],
+    [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        0,
+        0,
+        1,
+        0,
+        1,
+        1,
+        0,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+    ],
+    [
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        1,
+        1,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+    ],
+]
+assert braille_page("42") == [
+    [0, 1, 0, 1, 1, 0, 0, 1, 0, 1, 0],
+    [0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0],
+    [1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0],
+]
+assert braille_page("CODE") == [
+    [0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1],
+    [0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0],
+]
+
+print("The mission is done! Click 'Check Solution' to earn rewards!")
