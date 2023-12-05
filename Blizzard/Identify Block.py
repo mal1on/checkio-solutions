@@ -29,8 +29,8 @@ def identify_block(numbers):
             result = 'T'
         elif order[3] - order[1] == 7:
             result = 'J'
-        elif diff == 9:
-            result = 'L'
+    elif diff == 9 and (order[1] - order[0] == 1 or order[3] - order[2] == 1):
+        result = 'L'
 
 
 
@@ -44,3 +44,4 @@ identify_block({1, 2, 3, 6}) == 'T'
 identify_block({1, 5, 6, 10}) == 'S'
 identify_block({10, 13, 14, 15}) == 'T', 'T'
 identify_block({1, 5, 9, 6}) == 'T', 'T'
+identify_block({2, 3, 7, 11}) == 'L', 'L'
