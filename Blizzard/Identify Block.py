@@ -8,7 +8,7 @@ def identify_block(numbers):
         result = 'I'
     elif order[1] - order[0] == 1 and order[3] - order[2] == 1 and order[2] - order[1] > 1:
         result = 'O'
-    elif order[2] - order[0] == 2 or order[2] - order[0] == 8 or order[3] - order[1] == 2 or order[3] - order[1] == 8:
+    elif order[2] - order[0] == 2 or order[3] - order[1] == 2 or diff == 8:
         result = 'TJL'
 
 
