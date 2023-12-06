@@ -41,18 +41,14 @@ def identify_block(numbers):
     elif diff == 9 and (order[1] - order[0] == 1 or order[3] - order[2] == 1):
         result = 'L'
 
+    return result
 
 
-    print(result)
-
-
-
-identify_block({1, 2, 3, 4}) == 'I'
-identify_block({11, 12, 15, 16}) == 'O'
-identify_block({1, 2, 3, 6}) == 'T'
-identify_block({1, 5, 6, 10}) == 'S'
-identify_block({10, 13, 14, 15}) == 'T', 'T'
-identify_block({1, 5, 9, 6}) == 'T', 'T'
-identify_block({2, 3, 7, 11}) == 'L', 'L'
-identify_block({1, 2, 6, 7}) == 'Z', 'Z'
-identify_block([5,8,9,12]) == None
+if __name__ == '__main__':
+    # These "asserts" using only for self-checking and not necessary for auto-testing
+    assert identify_block({10, 13, 14, 15}) == 'T', 'T'
+    assert identify_block({1, 5, 9, 6}) == 'T', 'T'
+    assert identify_block({2, 3, 7, 11}) == 'L', 'L'
+    assert identify_block({4, 8, 12, 16}) == 'I', 'I'
+    assert identify_block({3, 1, 5, 8}) == None, 'None'
+    print('"Run" is good. How is "Check"?')
