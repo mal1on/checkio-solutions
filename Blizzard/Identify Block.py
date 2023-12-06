@@ -15,7 +15,7 @@ def identify_block(numbers):
             result = 'Z'
     elif order[1] - order[0] == 4 and order[3] - order[2] == 4 and diff == 9:
         result = 'S'
-    elif order[1] - order[0] == 3 and order[3] - order[2] == 3 and diff == 7:
+    elif order[1] - order[0] == 3 and order[3] - order[2] == 3 and order[0] in [2, 3, 4, 6, 7, 8]:
         result = 'Z'
     elif order[2] - order[0] == 2:
         base = order[:2]
@@ -55,3 +55,4 @@ identify_block({10, 13, 14, 15}) == 'T', 'T'
 identify_block({1, 5, 9, 6}) == 'T', 'T'
 identify_block({2, 3, 7, 11}) == 'L', 'L'
 identify_block({1, 2, 6, 7}) == 'Z', 'Z'
+identify_block([5,8,9,12]) == None
