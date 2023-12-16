@@ -6,8 +6,7 @@ from operator import itemgetter
 def checkio(log_text):
 
     lines = log_text.splitlines()
-    session, session_data, result = [], [], []
-    session_time = 1
+    session, result, session_time = [], [], 1
     pattern = '(https?://)(\w+\.)?(\w+\.\w+)'
 
     while lines:
@@ -23,16 +22,13 @@ def checkio(log_text):
                 session.append(line)
                 session_time += int((t_l - t).total_seconds())
                 t = t_l
-        [session_data.append(el) for el in [u, d, session_time, len(session)]]
-        result.append(session_data)
+        result.append([u, d, session_time, len(session)])
         lines = [l for l in lines if l not in session]
-        session, session_data = [], []
-        session_time = 1
+        session, session_time = [], 1
 
     result = sorted(result, key=itemgetter(0, 1, 2))
-    result = '\n'.join([';;'.join(list(map(str, l))) for l in result])
 
-    return result
+    return '\n'.join([';;'.join(list(map(str, l))) for l in result])
 
 
 # These "asserts" using only for self-checking and not necessary for auto-testing
