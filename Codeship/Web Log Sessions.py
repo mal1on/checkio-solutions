@@ -1,5 +1,28 @@
+import re
+from datetime import datetime
+
 def checkio(log_text):
-    return
+
+    lines = sorted(log_text.splitlines(), key=lambda l: l.split(';;')[0])
+    session, sessions = [], []
+
+    while lines:
+        session.append(lines.pop(0))
+        t, u, a = session[0].lower().split(';;')
+        t = datetime.strptime(t, '%Y-%m-%d-%H-%M-%S')
+        for line in lines:
+            t_l, u_l, a_l = line.lower().split(';;')
+            t_l = datetime.strptime(t_l, '%Y-%m-%d-%H-%M-%S')
+            if (t_l - t).total_seconds() <= 1800 and u_l == u:
+                session.append(line)
+                t = t_l
+        sessions.append(session)
+        lines = [l for l in lines if l not in session]
+        session = []
+
+    for s in sessions:
+        print(s)
+
 
 
 
