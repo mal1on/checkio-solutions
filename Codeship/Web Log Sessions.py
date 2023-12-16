@@ -5,15 +5,18 @@ def checkio(log_text):
 
     lines = sorted(log_text.splitlines(), key=lambda l: l.split(';;')[0])
     session, sessions = [], []
+    pattern = '(https?://)(\w+\.)?(\w+\.\w+)'
 
     while lines:
         session.append(lines.pop(0))
         t, u, a = session[0].lower().split(';;')
         t = datetime.strptime(t, '%Y-%m-%d-%H-%M-%S')
+        d = re.search(pattern, a).group(3)
         for line in lines:
             t_l, u_l, a_l = line.lower().split(';;')
             t_l = datetime.strptime(t_l, '%Y-%m-%d-%H-%M-%S')
-            if (t_l - t).total_seconds() <= 1800 and u_l == u:
+            d_l = re.search(pattern, a_l).group(3)
+            if (t_l - t).total_seconds() <= 1800 and u_l == u and d == d_l:
                 session.append(line)
                 t = t_l
         sessions.append(session)
