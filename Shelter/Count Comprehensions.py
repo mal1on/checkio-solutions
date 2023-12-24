@@ -1,9 +1,29 @@
-from typing import Dict
+import ast
 
 
-def count_comprehensions(source: str) -> Dict[str, int]:
+def count_comprehensions(source):
 
-    pass
+    result = {'ListComp': 0, 'SetComp': 0, 'DictComp': 0,  'GeneratorExp': 0}
+    output = ast.dump(ast.parse(source))
+
+    if 'ListComp' in output:
+        result['ListComp'] += output.count('ListComp')
+    else:
+        result.pop('ListComp')
+    if 'SetComp' in output:
+        result['SetComp'] += output.count('SetComp')
+    else:
+        result.pop('SetComp')
+    if 'DictComp' in output:
+        result['DictComp'] += output.count('DictComp')
+    else:
+        result.pop('DictComp')
+    if 'GeneratorExp' in output:
+        result['GeneratorExp'] += output.count('GeneratorExp')
+    else:
+        result.pop('GeneratorExp')
+
+    print(result)
 
 
 count_comprehensions('[n ** 2 for n in range(5)]') == {'ListComp': 1}
