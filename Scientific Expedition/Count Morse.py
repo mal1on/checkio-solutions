@@ -1,5 +1,3 @@
-from itertools import permutations as pm
-
 D = {
     "a": ".-",
     "b": "-...",
@@ -32,10 +30,30 @@ D = {
 
 def count_morse(message: str, letters: str) -> int:
 
-    print(len([perm for perm in pm(letters) if message == ''.join([D[c] for c in perm])]))
+    result = 0
+    queue = [(message, letters)]
+
+    while queue:
+        msg, let = queue.pop(0)
+        poss = [c for c in let if msg.startswith(D[c])]
+
+        for char in poss:
+            m = msg.removeprefix(D[char])
+            l = let.replace(char, '')
+            if m and l:
+                queue.append((m, l))
+            elif not m and not l:
+                result += 1
+
+    return result
 
 
+print("Example:")
+print(count_morse("-------.", "omg"))
 
-count_morse("-------.", "omg") == 2
-count_morse(".....-.-----", "morse") == 4
-count_morse("-..----.......-..-.", "xtmisuf") == 4
+# These "asserts" are used for self-checking
+assert count_morse("-------.", "omg") == 2
+assert count_morse(".....-.-----", "morse") == 4
+assert count_morse("-..----.......-..-.", "xtmisuf") == 4
+
+print("The mission is done! Click 'Check Solution' to earn rewards!")
