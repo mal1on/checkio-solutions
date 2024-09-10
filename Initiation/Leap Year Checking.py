@@ -1,28 +1,16 @@
-from datetime import datetime
+def is_leap_year(year: int) -> bool:
+
+    if year % 100 == 0 and year % 400 == 0:
+        return True
+    if year % 4 == 0 and year % 100 > 0:
+        return True
+    return False
 
 
-def convert_date(date: str) -> str:
-
-    try:
-        return datetime.strptime(date, '%d/%m/%Y').strftime('%Y-%m-%d')
-    except:
-        return 'Error: Invalid date.'
 
 
-print("Example:")
-print(convert_date("01/01/2023"))
 
-# These "asserts" are used for self-checking
-assert convert_date("25/12/2021") == "2021-12-25"
-assert convert_date("01/01/2000") == "2000-01-01"
-assert convert_date("15/06/1995") == "1995-06-15"
-assert convert_date("29/02/2020") == "2020-02-29"
-assert convert_date("10/10/2010") == "2010-10-10"
-assert convert_date("31/05/1985") == "1985-05-31"
-assert convert_date("07/08/1960") == "1960-08-07"
-assert convert_date("02/09/1999") == "1999-09-02"
-assert convert_date("30/04/1975") == "1975-04-30"
-assert convert_date("29/02/2019") == "Error: Invalid date."
-assert convert_date("30/04/1975/1") == "Error: Invalid date."
-
-print("The mission is done! Click 'Check Solution' to earn rewards!")
+print(is_leap_year(2000))
+print(is_leap_year(1900))
+print(is_leap_year(2004))
+print(is_leap_year(2100))
